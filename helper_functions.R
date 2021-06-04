@@ -74,6 +74,4 @@ source("https://raw.githubusercontent.com/joshuascriven/helper_functions/main/he
 
 ```{r, include=FALSE}
 packageloader(c("openxlsx", "tidyverse", "dplyr", "knitr", "stargazer", "gtsummary", "english", "scales", "ggpubr", "broom", "AICcmodavg", "lmtest", "sandwich", "reshape2"))
-```
-
-')
+```')
