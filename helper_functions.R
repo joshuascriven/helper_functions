@@ -62,4 +62,18 @@ date: "6/3/2021"
 # output: slidy_presentation
 output: html_notebook
 # output: powerpoint_presentation
----')
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message=FALSE)
+```
+
+```{r custom_functions, include=FALSE}
+source("https://raw.githubusercontent.com/joshuascriven/helper_functions/main/helper_functions.R")
+```
+
+```{r, include=FALSE}
+packageloader(c("openxlsx", "tidyverse", "dplyr", "knitr", "stargazer", "gtsummary", "english", "scales", "ggpubr", "broom", "AICcmodavg", "lmtest", "sandwich", "reshape2"))
+```
+
+')
