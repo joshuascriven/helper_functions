@@ -25,7 +25,7 @@ packageloader <- function(...){
              library(x, character.only = TRUE)
            }})}
 
-#load this rmd YAML header with commented out options to the clipboard
+#load this rmd YAML and Rmd template to the clipboard
 writeClipboard('---
 title: "LOC Data Request 2"
 author: "Joshua Scriven"
