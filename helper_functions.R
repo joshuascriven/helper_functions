@@ -32,6 +32,7 @@ author: "Joshua Scriven"
 date: "6/3/2021"
 # output: ioslides_presentation
 # output: word_document
+# output: pdf_document 
 
 #   # requires install.packages("revealjs")
   # output:
