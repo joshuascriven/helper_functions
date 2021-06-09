@@ -27,9 +27,9 @@ packageloader <- function(...){
 
 #load this rmd YAML and Rmd template to the clipboard
 out <- '---
-title: "LOC Data Request 2"
+title: "Title"
 author: "Joshua Scriven"
-date: "6/3/2021"
+date: Sys.Date()
 # output: ioslides_presentation
 # output: word_document
 # output: pdf_document 
