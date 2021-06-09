@@ -26,7 +26,7 @@ packageloader <- function(...){
            }})}
 
 #load this rmd YAML and Rmd template to the clipboard
-writeClipboard('---
+out <- '---
 title: "LOC Data Request 2"
 author: "Joshua Scriven"
 date: "6/3/2021"
@@ -75,4 +75,6 @@ source("https://raw.githubusercontent.com/joshuascriven/helper_functions/main/he
 
 ```{r, include=FALSE}
 packageloader(c("openxlsx", "tidyverse", "dplyr", "knitr", "stargazer", "gtsummary", "english", "scales", "ggpubr", "broom", "AICcmodavg", "lmtest", "sandwich", "reshape2"))
-```')
+```'
+# Windows or Mac
+clipr::write_clip(out)
