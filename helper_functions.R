@@ -77,4 +77,4 @@ source("https://raw.githubusercontent.com/joshuascriven/helper_functions/main/he
 packageloader(c("openxlsx", "tidyverse", "dplyr", "knitr", "stargazer", "gtsummary", "english", "scales", "ggpubr", "broom", "AICcmodavg", "lmtest", "sandwich", "reshape2"))
 ```'
 # Windows or Mac
-clipr::write_clip(out)
+clipr::write_clip(out, allow_non_interactive = TRUE)
