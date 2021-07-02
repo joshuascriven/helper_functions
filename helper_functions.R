@@ -1,5 +1,25 @@
 # Helpful functions created/curated by jscriven
 
+# merge polygons in sf by grouping id
+st_union_by = function(geo, group) {
+   # browser()
+   geo
+   group
+ 
+   y2 = list()
+   #loop over by groups and merge units
+   for (i in unique(group)) {
+     #which units
+     z = geo[group == i]
+ 
+     #merge
+     y = Reduce(st_union, z)
+     y2[[i]] = y
+   }
+ 
+   st_sfc(y2)
+ }
+
 # formula paster
 formfunc <- function(dv, ivs){
   as.formula(
