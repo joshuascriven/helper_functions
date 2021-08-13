@@ -1,7 +1,7 @@
 # Helpful functions created/curated by jscriven
 
 # merge polygons in sf by grouping id
-st_union_by = function(geo, group) {
+st_union_by <- function(geo, group) {
    # browser()
    geo
    group
@@ -44,6 +44,11 @@ packageloader <- function(...){
              install.packages(x, dependencies = TRUE)
              library(x, character.only = TRUE)
            }})}
+
+# place text within file name after directory externally set
+filemaker <- function(filename,format){
+  paste0(data_dir,filename,".",format)
+}
 
 #load this rmd YAML and Rmd template to the clipboard
 out <- '---
