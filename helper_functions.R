@@ -50,6 +50,11 @@ filemaker <- function(filename,format){
   paste0(data_dir,filename,".",format)
 }
 
+# color scale creator with dcf dashboards color scheme
+dcf_scale <- function(n){
+  colorRampPalette(c("#FF0018","#AD1510","#FB8C00","#FDD734","#5A8D55"))(n)
+}
+
 #load this rmd YAML and Rmd template to the clipboard
 out <- '---
 title: "Title"
