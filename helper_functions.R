@@ -21,11 +21,19 @@ st_union_by <- function(geo, group) {
  }
 
 # formula paster
-formfunc <- function(dv, ivs){
-  as.formula(
-    paste(dv, 
-          paste(ivs, collapse = " + "), 
-          sep = " ~ "))
+formfunc <- function(dv, ivs,int){
+  if(missing(int)) {
+    as.formula(
+      paste(dv, 
+            paste(ivs, collapse = " + "), 
+            sep = " ~ "))    
+  } else {
+    as.formula(
+      paste(dv, 
+            paste(c(ivs,int), collapse = " + "), 
+            sep = " ~ "))
+  }
+
 }
 
 # Pythonic zip function
