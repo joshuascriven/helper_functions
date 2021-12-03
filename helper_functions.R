@@ -20,6 +20,17 @@ st_union_by <- function(geo, group) {
    st_sfc(y2)
  }
 
+# inclusive version of seq()
+seqlast <- function (from, to, by) 
+{
+  vec <- do.call(what = seq, args = list(from, to, by))
+  if ( tail(vec, 1) != to ) {
+    return(c(vec, to))
+  } else {
+    return(vec)
+  }
+}
+
 # formula paster
 formfunc <- function(dv, ivs,int){
   if(missing(int)) {
