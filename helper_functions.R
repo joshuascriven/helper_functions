@@ -36,6 +36,12 @@ formfunc <- function(dv, ivs,int){
 
 }
 
+# mode function
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
 # Pythonic zip function
 zip <- function(...){
   Map(list,...)}
