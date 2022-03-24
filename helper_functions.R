@@ -97,56 +97,60 @@ dcf_scale <- function(n){
   colorRampPalette(c("#FF0018","#AD1510","#FB8C00","#FDD734","#5A8D55"))(n)
 }
 
+# convert character to numeric, taking level order into account
+make_numeric <- function(x,lev) as.numeric(ordered(x , levels = lev ))
+
+
 #load this rmd YAML and Rmd template to the clipboard
-out <- '---
-title: "Title"
-author: "Joshua Scriven"
-date: Sys.Date()
-# output: ioslides_presentation
-# output: word_document
-# output: pdf_document 
-
-#   # requires install.packages("revealjs")
-  # output:
-#   revealjs::revealjs_presentation: 
-#     theme: solarized
-#     highlight: tango
-#     transition: slide
-
-#Requires install.packages("rmdformats ")
-# output: rmdformats::readthedown
-# output: rmdformats::html_clean
-
-# output:
-#   slidy_presentation:
-#     # theme: darkly
-#     # theme: lumen # good
-#     # theme: readable
-#     theme: cerulean # good
-    # theme: journal
-    # theme: flatly
-    # theme: spacelab
-    # theme: united
-    # theme: cosmo #good
-    # theme: paper
-    # theme: sandstone
-    # theme: simplex
-    # theme: yeti # good
-# output: slidy_presentation
-output: html_notebook
-# output: powerpoint_presentation
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message=FALSE)
-```
-
-```{r custom_functions, include=FALSE}
-source("https://raw.githubusercontent.com/joshuascriven/helper_functions/main/helper_functions.R")
-```
-
-```{r, include=FALSE}
-packageloader(c("openxlsx", "tidyverse", "dplyr", "knitr", "stargazer", "gtsummary", "english", "scales", "ggpubr", "broom", "AICcmodavg", "lmtest", "sandwich", "reshape2"))
-```'
-# Windows or Mac
-clipr::write_clip(out, allow_non_interactive = TRUE)
+# out <- '---
+# title: "Title"
+# author: "Joshua Scriven"
+# date: Sys.Date()
+# # output: ioslides_presentation
+# # output: word_document
+# # output: pdf_document 
+# 
+# #   # requires install.packages("revealjs")
+#   # output:
+# #   revealjs::revealjs_presentation: 
+# #     theme: solarized
+# #     highlight: tango
+# #     transition: slide
+# 
+# #Requires install.packages("rmdformats ")
+# # output: rmdformats::readthedown
+# # output: rmdformats::html_clean
+# 
+# # output:
+# #   slidy_presentation:
+# #     # theme: darkly
+# #     # theme: lumen # good
+# #     # theme: readable
+# #     theme: cerulean # good
+#     # theme: journal
+#     # theme: flatly
+#     # theme: spacelab
+#     # theme: united
+#     # theme: cosmo #good
+#     # theme: paper
+#     # theme: sandstone
+#     # theme: simplex
+#     # theme: yeti # good
+# # output: slidy_presentation
+# output: html_notebook
+# # output: powerpoint_presentation
+# ---
+# 
+# ```{r setup, include=FALSE}
+# knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message=FALSE)
+# ```
+# 
+# ```{r custom_functions, include=FALSE}
+# source("https://raw.githubusercontent.com/joshuascriven/helper_functions/main/helper_functions.R")
+# ```
+# 
+# ```{r, include=FALSE}
+# packageloader(c("openxlsx", "tidyverse", "dplyr", "knitr", "stargazer", "gtsummary", "english", "scales", "ggpubr", "broom", "AICcmodavg", "lmtest", "sandwich", "reshape2"))
+# ```'
+# # Windows or Mac
+# clipr::write_clip(out, allow_non_interactive = TRUE)
