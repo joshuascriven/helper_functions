@@ -105,6 +105,14 @@ build.ror <- function(final.rnames, name.map){
     list(ccn=newnames, oc=omit, rc=reorder)
 }
 
+# get all variable names from list of models (from https://www.r-bloggers.com/2013/10/call-them-what-you-will/)
+all.varnames.dammit <- function(model.list){
+    mods <- texreg:::get.data(model.list)
+    gofers <- texreg:::get.gof(mods)
+    mm <- texreg:::aggregate.matrix(mods, gofers, digits=3)
+    rownames(mm)
+}
+
 # color scale creator with dcf dashboards color scheme
 dcf_scale <- function(n){
   colorRampPalette(c("#FF0018","#AD1510","#FB8C00","#FDD734","#5A8D55"))(n)
