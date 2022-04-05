@@ -92,6 +92,19 @@ filemaker <- function(filename,format){
   paste0(data_dir,filename,".",format)
 }
 
+# reorder and rename coefficients in Latex output of texreg (from https://www.r-bloggers.com/2013/10/call-them-what-you-will/)
+build.ror <- function(final.rnames, name.map){
+    keep <- final.rnames %in% names(name.map)
+    mapper <- function(x){
+    mp <- name.map[[x]] 
+    ifelse(is.null(mp), x, mp)
+    }
+    newnames <- sapply(final.rnames, mapper)
+    omit <- paste0(final.rnames[!keep], collapse="|")
+    reorder <- na.omit(match(unlist(name.map), newnames[keep]))
+    list(ccn=newnames, oc=omit, rc=reorder)
+}
+
 # color scale creator with dcf dashboards color scheme
 dcf_scale <- function(n){
   colorRampPalette(c("#FF0018","#AD1510","#FB8C00","#FDD734","#5A8D55"))(n)
