@@ -121,6 +121,29 @@ dcf_scale <- function(n){
 # convert character to numeric, taking level order into account
 make_numeric <- function(x,lev) as.numeric(ordered(x , levels = lev ))
 
+# return odbc database from regex search
+getdb <- function(connection, string_name, locate = "exact"){
+  if (locate != "exact"){
+    db <- grep("qualtr",dbListTables(connection), value = TRUE)
+    dbGetQuery(connection, paste0(sprintf("SELECT * FROM [%s]", db[length(db)])))
+  } else {
+    db <- grep(string_name,dbListTables(connection), value = TRUE)
+    if (length(db) > 1){
+      cat("Exact string not found! Use locate='latest' or one of the following:\n",paste0(db,collapse = "\n"))
+    } else {
+      dbGetQuery(connection, paste0(sprintf("SELECT * FROM [%s]", db)))
+    }
+  }
+}
+
+# return odbc database names from regex search
+getdb_names <-  function(connection, string_name){
+  grep(string_name,dbListTables(connection), value = TRUE)
+}
+
+
+
+
 
 #load this rmd YAML and Rmd template to the clipboard
 # out <- '---
