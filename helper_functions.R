@@ -3,7 +3,12 @@
 # functions for identifying if any or all elements an object comprise NAs
 not_all_na <- function(x) any(!is.na(x))
 not_any_na <- function(x) all(!is.na(x))
+getunique <- function(x) unique(x[!is.na(x)]) # unique non-nans
+getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of unique non-nans 
+len <- function(x) length(x) # pythonic length
+lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
+                       
 # merge polygons in sf by grouping id
 st_union_by <- function(geo, group) {
    # browser()
