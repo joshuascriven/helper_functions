@@ -146,8 +146,10 @@ getdb_names <-  function(connection, string_name){
   grep(string_name,dbListTables(connection), value = TRUE)
 }
 
-
-
+# simple lookup function for stored id info
+getKey <- function(info){
+  api_key %>% filter(param == info) %>% pull(val)
+}
 
 
 #load this rmd YAML and Rmd template to the clipboard
