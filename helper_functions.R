@@ -151,6 +151,78 @@ getKey <- function(info){
   api_key %>% filter(param == info) %>% pull(val)
 }
 
+#========================================================================
+# codebook functions 
+#========================================================================
+
+# create empty codebook
+
+scrivbook <- function(
+  data=as.data.frame(list())
+  , proj=gsub('.*([0-9].)$','\\1',here())
+  , sname=""
+  , pattern=""
+  , mode="list"
+  , dir= "../data/codebooks/"
+  , replace = False){
+
+  name <- paste0("cb_JS",proj,"_",sname,".","xlsx")
+  file <- paste0(dir,name,".","xlsx")
+  # print(name)
+
+  if (mode=="list"){
+    return(list.files(dir, pattern=paste0("cb", pattern)))
+  } 
+  
+  make_codebook <- function(data){
+    (as.data.frame(1:ncol(data)) %>%
+      mutate(
+        name_old = names(data)
+        , description = NA
+        , name_new = NA
+        , iv_dv_cov = NA
+        , direction = NA
+        , display_names = NA
+        , display_names_short = NA
+        , comments = NA
+    )) %>% rename(qid = `1:ncol(data)`)
+    }
+    
+  if (mode=="make:r"){
+    make_codebook(data)
+  }
+
+  # Make excel workbook
+  if (mode=="make:excel"){
+      
+    ifelse(!dir.exists(file.path(dir)), dir.create(file.path(dir), recursive = TRUE), "dir already exists!")
+
+    codebook <- make_codebook(data,name)
+  
+    if (!file.exists(file)) {
+      wb <- createWorkbook()
+      
+      describe_data <- sprintf(
+        "This file contains questions and labels for the %s project.", name)
+      
+      addWorksheet(wb, "data_description")
+      writeData(wb, "data_description",describe_data)
+      
+      addWorksheet(wb, "main")
+      writeData(wb, "main",codebook)
+      
+      saveWorkbook(wb,file, overwrite = replace)
+    }
+
+    browseURL(file)
+  }
+
+  # open existing codebook in excel
+  if (mode=="view"){
+    browseURL(file)
+  }
+}
+
 
 #load this rmd YAML and Rmd template to the clipboard
 # out <- '---
