@@ -4,10 +4,14 @@
 not_all_na <- function(x) any(!is.na(x))
 not_any_na <- function(x) all(!is.na(x))
 getunique <- function(x) unique(x[!is.na(x)]) # unique non-nans
+getnonan <- function(x) x[!is.na(x)] # return non-nan vector
 getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of unique non-nans 
 len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
+cleanhtml <- function(htmlString) {
+  return(gsub("<.*?>", "", htmlString))
+}
                        
 # merge polygons in sf by grouping id
 st_union_by <- function(geo, group) {
@@ -151,6 +155,13 @@ getKey <- function(info){
   api_key %>% filter(param == info) %>% pull(val)
 }
 
+
+
+replacewith <-function(df,pattern,replacement){    
+    df <- as.data.frame(apply(df, 2, function(x) gsub(pattern, replacement, x)))
+      df
+    }
+
 #========================================================================
 # codebook functions 
 #========================================================================
@@ -158,69 +169,88 @@ getKey <- function(info){
 # create empty codebook
 
 scrivbook <- function(
-  data=as.data.frame(list())
+  pattern=""
+  , type=""
+  , data=as.data.frame(list())
   , proj=gsub('.*([0-9].)$','\\1',here())
   , sname=""
-  , pattern=""
+  , name=""
+  , file=""
   , mode="list"
   , dir= "../data/codebooks/"
   , replace = False){
-
-  name <- paste0("cb_JS",proj,"_",sname,".","xlsx")
-  file <- paste0(dir,name,".","xlsx")
-  # print(name)
-
-  if (mode=="list"){
-    return(list.files(dir, pattern=paste0("cb", pattern)))
-  } 
-  
-  make_codebook <- function(data){
-    (as.data.frame(1:ncol(data)) %>%
-      mutate(
-        name_old = names(data)
-        , description = NA
-        , name_new = NA
-        , iv_dv_cov = NA
-        , direction = NA
-        , display_names = NA
-        , display_names_short = NA
-        , comments = NA
-    )) %>% rename(qid = `1:ncol(data)`)
-    }
     
-  if (mode=="make:r"){
-    make_codebook(data)
-  }
+    # if (name==""){
+    #   name <- paste0("cb_JS",proj,"_",sname,".","xlsx")
+    # } else { name <- name}
+    
+    if (file==""){
+        file <- paste0(dir,name,".","xlsx")
+    } else { file <- file}
+    # print(name)
 
-  # Make excel workbook
-  if (mode=="make:excel"){
-      
-    ifelse(!dir.exists(file.path(dir)), dir.create(file.path(dir), recursive = TRUE), "dir already exists!")
+    if (mode=="list"){
+      if(type=="path"){
+        return(list.files(dir, pattern=paste0("^cb.*", pattern),full.names = TRUE))
+      } else if (type=="name"){
+        return(list.files(dir, pattern=paste0("^cb.*", pattern),full.names = FALSE))
+      } else if(type=="book"){
+        return(read.xlsx(list.files(dir, pattern=paste0("^cb.*", pattern),full.names = TRUE), sheet="main"))
+      } else {
+        return(cbind(list.files(dir, pattern=paste0("^cb.*", pattern),full.names = FALSE)
+        ,list.files(dir, pattern=paste0("^cb.*", pattern),full.names = TRUE)))
+      }
+    } 
+    
+    make_codebook <- function(data){
 
-    codebook <- make_codebook(data,name)
-  
-    if (!file.exists(file)) {
-      wb <- createWorkbook()
+        data.frame(qid = 1:ncol(data_out)) %>%
+          mutate(
+              name_old = names(data_out)
+              , description = NA
+              , name_new = NA
+              , iv_dv_cov = NA
+              , direction = NA
+              , display_names = NA
+              , display_names_short = NA
+              , comments = NA
+          )
+    }
       
-      describe_data <- sprintf(
-        "This file contains questions and labels for the %s project.", name)
-      
-      addWorksheet(wb, "data_description")
-      writeData(wb, "data_description",describe_data)
-      
-      addWorksheet(wb, "main")
-      writeData(wb, "main",codebook)
-      
-      saveWorkbook(wb,file, overwrite = replace)
+    if (mode=="make:r"){
+      make_codebook(data)
     }
 
-    browseURL(file)
-  }
+    # Make excel workbook
+    if (mode=="make:excel"){
+        
+      ifelse(!dir.exists(file.path(dir)), dir.create(file.path(dir), recursive = TRUE), "dir already exists!")
 
-  # open existing codebook in excel
-  if (mode=="view"){
-    browseURL(file)
-  }
+      codebook <- make_codebook(data,name)
+    
+      if (!file.exists(file)) {
+        wb <- createWorkbook()
+        
+        describe_data <- sprintf(
+          "This file contains questions and labels for the %s project.", name)
+        
+        addWorksheet(wb, "data_description")
+        writeData(wb, "data_description",describe_data)
+        
+        addWorksheet(wb, "main")
+        writeData(wb, "main",codebook)
+        
+        saveWorkbook(wb,file, overwrite = replace)
+      }
+
+      browseURL(file)
+    }
+
+    # open existing codebook in excel
+    if (mode=="view"){
+      print(name)
+     return( browseURL(file))
+    }
 }
 
 
