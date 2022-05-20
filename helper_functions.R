@@ -9,6 +9,15 @@ getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of u
 len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
+# coalesce dplyr piped columns
+coalesce_df <-function(data, ...) {
+  data %>%
+    select(...) %>%
+    transmute(result = invoke(coalesce, .)) %>%
+    bind_cols(data, .)
+}
+
+# clean html from strings
 cleanhtml <- function(htmlString) {
   return(gsub("<.*?>", "", htmlString))
 }
