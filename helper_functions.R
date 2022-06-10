@@ -213,9 +213,9 @@ scrivbook <- function(
     
     make_codebook <- function(data){
 
-        data.frame(qid = 1:ncol(data_out)) %>%
+        data.frame(qid = 1:ncol(data)) %>%
           mutate(
-              name_old = names(data_out)
+              name_old = names(data)
               , description = NA
               , name_new = NA
               , iv_dv_cov = NA
