@@ -1,13 +1,19 @@
 # Helpful functions created/curated by jscriven
 
-# functions for identifying if any or all elements an object comprise NAs
-not_all_na <- function(x) any(!is.na(x))
-not_any_na <- function(x) all(!is.na(x))
+not_all_na <- function(x) any(!is.na(x)) # returns logical for at least 1 non-NA element
+not_any_na <- function(x) all(!is.na(x)) # returns logical for at least 1 NA element
 getunique <- function(x) unique(x[!is.na(x)]) # unique non-nans
 getnonan <- function(x) x[!is.na(x)] # return non-nan vector
 getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of unique non-nans 
 len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
+
+# split unidimensional object into sub-objects of equal size k
+equi_split <- function(data, k=2){
+  n <- length(data)
+  out <- split(data, rep(1:ceiling(n/k), each=k)[1:n])
+  return(out)
+}
 
 # coalesce dplyr piped columns
 coalesce_df <-function(data, ...) {
