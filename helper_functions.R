@@ -242,7 +242,7 @@ scrivbook <- function(
     }
       
     if (mode=="make:r"){
-      make_codebook(data)
+      return(make_codebook(data))
     }
 
     # Make excel workbook
