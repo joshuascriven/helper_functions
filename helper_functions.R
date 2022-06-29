@@ -183,6 +183,7 @@ scrivbook <- function(
   , data=as.data.frame(list())
   , proj=gsub('.*([0-9].)$','\\1',here())
   , sname=""
+  , info_cols=""
   , name=""
   , file=""
   , mode="list"
@@ -213,7 +214,7 @@ scrivbook <- function(
     
     make_codebook <- function(data){
 
-        data.frame(qid = 1:ncol(data)) %>%
+        data_out <- data.frame(qid = 1:len(data)) %>%
           mutate(
               name_old = names(data)
               , description = NA
@@ -224,6 +225,14 @@ scrivbook <- function(
               , display_names_short = NA
               , comments = NA
           )
+
+        if (len(info_cols)!=0){
+            for (f in names(info_cols)){
+                data_out[[f]] <- info_cols[[f]]
+            }
+        }
+
+        return(data_out)
     }
       
     if (mode=="make:r"){
