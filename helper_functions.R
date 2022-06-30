@@ -219,32 +219,30 @@ scrivbook <- function(
     } 
     
     make_codebook <- function(data){
-
+        
         data_out <- data.frame(qid = 1:len(data)) %>%
-          mutate(
-              name_old = names(data)
-              , description = NA
-              , name_new = NA
-              , iv_dv_cov = NA
-              , direction = NA
-              , display_names = NA
-              , display_names_short = NA
-              , comments = NA
-          )
-
+        mutate(
+            name_old = names(data)
+            , description = NA
+            , name_new = NA
+            , display_names = NA
+            , display_names_short = NA
+            , comments = NA
+        )
+        
         if (len(info_cols)!=0){
-            for (f in names(info_cols)){
-                data_out[[f]] <- info_cols[[f]]
-            }
+        for (f in (info_cols)){
+            data_out[[f]] <- NA
         }
-
+        }
+        
         return(data_out)
     }
-      
+    
     if (mode=="make:r"){
-      return(make_codebook(data))
+        return(make_codebook(data))
     }
-
+    
     # Make excel workbook
     if (mode=="make:excel"){
         
