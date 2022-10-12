@@ -109,7 +109,9 @@ packageloader <- function(...){
            if (!require(x, character.only = TRUE)) {
              install.packages(x, dependencies = TRUE)
              library(x, character.only = TRUE)
-           }})}
+           }})
+           print("packages loaded")
+}
 
 # place text within file name after directory externally set
 filemaker <- function(filename,format){
