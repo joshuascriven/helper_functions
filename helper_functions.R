@@ -1,4 +1,4 @@
-# Helpful functions created/curated by jscriven
+# Helpful functions created and/or curated by jscriven
 
 not_all_na <- function(x) any(!is.na(x)) # returns logical for at least 1 non-NA element
 not_any_na <- function(x) all(!is.na(x)) # returns logical for at least 1 NA element
@@ -14,6 +14,14 @@ equi_split <- function(data, k=2){
   out <- split(data, rep(1:ceiling(n/k), each=k)[1:n])
   return(out)
 }
+
+# collapse mutually exclusive dummies into categorical
+dedummy = function(x)
+{
+    ans = integer(nrow(x))
+    for(i in seq_along(x)) ans[as.logical(x[[i]])] = i
+    names(x)[ans]
+} 
 
 # coalesce dplyr piped columns
 coalesce_df <-function(data, ...) {
