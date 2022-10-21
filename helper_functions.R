@@ -8,6 +8,16 @@ getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of u
 len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
+# read in excel sheets as list of dfs
+# library(readxl)    
+read_excel_allsheets <- function(filename, tibble = TRUE) {
+  sheets <- readxl::excel_sheets(filename)
+  x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
+  if(!tibble) x <- lapply(x, as.data.frame)
+  names(x) <- sheets
+  x
+}
+
 # split unidimensional object into sub-objects of equal size k
 equi_split <- function(data, k=2){
   n <- length(data)
