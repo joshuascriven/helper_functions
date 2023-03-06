@@ -10,12 +10,21 @@ lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) #
 
 # read in excel sheets as list of dfs
 # library(readxl)    
-read_excel_allsheets <- function(filename, tibble = TRUE) {
+read_excel_allsheets <- function(filename, sheet_keep = ".", tibble = TRUE, cleancols = FALSE, nskip = 0) {
   sheets <- readxl::excel_sheets(filename)
-  x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
+  sheets <- grep(paste(sheet_keep,collapse = "|"),sheets, value = TRUE)
+  if( cleancols) x <- lapply(sheets, function(X) transform(clean_names(readxl::read_excel(filename, sheet = X, skip = nskip)), sheetname = paste0(filename,X)))
+  if(!cleancols) x <- lapply(sheets, function(X) transform(readxl::read_excel(filename, sheet = X, skip = nskip), sheetname = paste0(filename,X)))
   if(!tibble) x <- lapply(x, as.data.frame)
   names(x) <- sheets
   x
+}
+
+# read in sheets of excel workbooks as list of lists of dfs
+read_excel_allworkbooks <- function(path, pattern, sheet_keep = ".", cleancols = FALSE, nskip = 0) {
+  filelist  <- list.files(path = path, pattern = pattern, full.names = T)
+  files <- lapply(filelist , read_excel_allsheets, sheet_keep = sheet_keep, cleancols = cleancols, nskip = nskip)
+  files
 }
 
 # split unidimensional object into sub-objects of equal size k
