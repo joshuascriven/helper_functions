@@ -27,6 +27,16 @@ read_excel_allworkbooks <- function(path, pattern, sheet_keep = ".", cleancols =
   files
 }
 
+# get next weekday's date
+nextweekday <- function(date, wday) {
+  date <- as.Date(date)
+  diff <- wday - wday(date)
+  if( diff < 0 )
+    diff <- diff + 7
+  return(date + diff)
+}
+
+
 # split unidimensional object into sub-objects of equal size k
 equi_split <- function(data, k=2){
   n <- length(data)
