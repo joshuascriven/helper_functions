@@ -34,8 +34,7 @@ nextweekday <- function(date, wday) {
   if( diff < 0 )
     diff <- diff + 7
   return(date + diff)
-}
-
+} # Sunday = 1, Monday = 2, ...
 
 # split unidimensional object into sub-objects of equal size k
 equi_split <- function(data, k=2){
