@@ -8,6 +8,15 @@ getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of u
 len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
+# get location of match in list 
+find_in_list <- function(list,pattern,sensitivity){
+  if(sensitivity=="exact"){
+  which(sapply(list, function(x) pattern %in% x))
+  } else {
+  which(sapply(list, function(x) any(grepl(pattern,x)))) 
+    }
+}
+
 # read in excel sheets as list of dfs
 # library(readxl)    
 read_excel_allsheets <- function(filename, sheet_keep = ".", tibble = TRUE, cleancols = FALSE, nskip = 0) {
