@@ -12,9 +12,11 @@ lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) #
 find_in_list <- function(list,pattern,sensitivity){
   if(sensitivity=="exact"){
   which(sapply(list, function(x) pattern %in% x))
+  } else if (sensitivity=="every") {
+  which(sapply(list, function(x) all(grepl(pattern,x))))  # every of elements matches pattern
   } else {
-  which(sapply(list, function(x) any(grepl(pattern,x)))) 
-    }
+  which(sapply(list, function(x) any(grepl(pattern,x)))) # any of elements matches pattern
+  }
 }
 
 # read in excel sheets as list of dfs
