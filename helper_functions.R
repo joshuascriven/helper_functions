@@ -8,6 +8,83 @@ getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of u
 len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
+# anonymize names
+name_anonymizer <- function(data_input,mode="get"){
+  data_input_bac <- data_input
+  name_pool <- toupper(randomNames(len(data_input)*3,which.names = "first"))
+  name_pool <- name_pool[!grepl(" ",name_pool)]
+
+    name_anonymizer_unique <- function(name,mode="harmonize"){
+    namepatt <- (str_replace_all(
+      string = getunique(name)
+      , pattern = "\\w{4,}","\\(\\\\w+\\)"))
+    str_count(namepatt, "w")
+    (name_old <- (unlist(strsplit(sub(namepatt, paste0(
+                                        "\\",1:str_count(namepatt, "w")
+                                        , collapse=" "),name)," "))))
+    (name_old_sorted <- paste(collapse=" "
+                  , sort(unlist(strsplit(sub(namepatt
+                               , paste0("\\",1:str_count(namepatt, "w")
+                                        , collapse=" "),name)," ")))))
+    name_new <- sample(name_pool,size = str_count(name_old_sorted, " ")+1)
+    if (mode=="harmonize") {
+      return(
+        data.frame(
+          name_old = name
+          ,name_old_sorted = name_old_sorted
+        )
+      )
+    } else if (mode=="anonymize"){
+      return(
+        data.frame(
+          # name_old = name
+          name_old_sorted = name_old_sorted
+          ,name_new =stri_replace_all_regex(
+            str = name
+            ,pattern = name_old
+            ,replacement = name_new
+            , vectorize_all = F)
+          ,namepattern = namepatt
+          ,size_old = str_count(name_old_sorted, " ")+1
+        )
+      )
+      
+    }
+  }
+  
+  temp1 <- getunique(data_input) %>% 
+    map_df(name_anonymizer_unique,"harmonize")
+  temp2 <- getunique(temp1$name_old_sorted) %>% 
+    map_df(name_anonymizer_unique,"anonymize")
+  names_unique <- merge(temp1,temp2,"name_old_sorted") 
+  (names_unique)
+
+  name_new_tab <- str_split(names_unique$name_new, " ", simplify = T)
+
+  for(n_nq in 1:nrow(names_unique) ){
+    patt_row <- names_unique %>% filter(name_old==names_unique$name_old[n_nq])
+    keeps <- grep(paste0("^",names_unique$name_old[n_nq],"$"),data_input)
+    name_new_reconfig <- stri_replace_all_regex(
+      str = names_unique$name_old[n_nq]
+      ,pattern = c(str_split(sub(names_unique$namepattern[n_nq], paste0("\\",1:str_count(names_unique$namepattern[n_nq], "w"), collapse=" "),names_unique$name_old_sorted[n_nq]), " ", simplify = T))
+      ,replacement = name_new_tab[n_nq,][name_new_tab[n_nq,]!=""]
+      ,vectorize_all = F
+        )
+    data_input[keeps] <- name_new_reconfig
+  }  
+
+    return(
+    if (mode=="troubleshoot"){
+      data.frame(
+        name_old = data_input_bac
+        ,name_new = data_input)
+    } else {
+      data_input
+    })
+  
+}
+
+
 # get location of match in list 
 find_in_list <- function(list,pattern,sensitivity){
   if(sensitivity=="exact"){
