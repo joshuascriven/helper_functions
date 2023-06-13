@@ -130,7 +130,14 @@ equi_split <- function(data, k=2){
   out <- split(data, rep(1:ceiling(n/k), each=k)[1:n])
   return(out)
 }
-
+ 
+# split unidimensional object into a list of sub-objects where pattern is found and not found.
+splitter <- function(vect, patt){
+  splitting <- grepl(patt, vect)
+  out <- split(x=vect, f=splitting)
+  return(out)
+}                            
+                                                       
 # collapse mutually exclusive dummies into categorical
 dedummy = function(x)
 {
