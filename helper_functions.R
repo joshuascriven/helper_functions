@@ -143,12 +143,10 @@ suffixer <- function(vect_old, suffix, patt_exclude=" "){
   # patt_exclude = patt_exclude
   vect_new <- splitter(vect_old,patt_exclude)[["FALSE"]]
   vect_new_modded <- paste0(vect_new,suffix)
-  vect_old[names(rows_mid) %in% vect_new] <- vect_new_modded
+  vect_old[vect_old %in% vect_new] <- vect_new_modded
   return(vect_old)
 }
-
-suffixer(names(rows_mid), suffix=".mid")
-                             
+                            
                              
 # collapse mutually exclusive dummies into categorical
 dedummy = function(x)
