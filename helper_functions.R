@@ -420,7 +420,18 @@ scrivbook <- function(
     }
 }
 
-
+# converts copied path from File explorer to R-usable format                          
+pathPrep <- function(path = "clipboard") {
+    y <- if (path == "clipboard") {
+        readClipboard()
+    } else {
+        cat("Please enter the path:\n\n")
+        readline()
+    }
+    x <- chartr("\\", "/", y)
+    writeClipboard(x)
+    return(x)
+}
 #load this rmd YAML and Rmd template to the clipboard
 # out <- '---
 # title: "Title"
