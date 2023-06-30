@@ -2,6 +2,9 @@
 
 not_all_na <- function(x) any(!is.na(x)) # returns logical for at least 1 non-NA element
 not_any_na <- function(x) all(!is.na(x)) # returns logical for at least 1 NA element
+not_all_blank <- function(x) any(x!="") # returns logical for at least 1 non-blank element
+not_any_na <- function(x) all(x!="")  # returns logical for at least 1 BLANK element
+
 getunique <- function(x) unique(x[!is.na(x)]) # unique non-nans
 getnonan <- function(x) x[!is.na(x)] # return non-nan vector
 getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of unique non-nans 
