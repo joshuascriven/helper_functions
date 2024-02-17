@@ -11,6 +11,23 @@ getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of u
 len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
+# read in a currently-open xlsx file
+read_excel_tmp <- function(path, sheet = NULL, range = NULL, col_names = TRUE,
+                           col_types = NULL, na = "", trim_ws = TRUE,
+                           skip = 0, n_max = Inf, guess_max = min(1000, n_max),
+                           progress = readxl::readxl_progress(),
+                           .name_repair = "unique"){
+  destfile <- tempfile(fileext = ".xlsx")
+  mycmd <- paste0("powershell -command \"Copy-Item '", gsub("/", "\\\\", path),
+                  "' -Destination '", destfile, "'\"")
+  error_code <- system(mycmd)
+  if(error_code != 0) {stop("Powershell's `Copy-Item` was not able to copy-paste the file")}
+  readxl::read_excel(path = destfile, sheet = sheet, range = range,
+                     col_names = col_names, col_types = col_types, na = na,
+                     trim_ws = trim_ws, skip = skip, n_max = n_max,
+                     guess_max = guess_max, progress = progress,
+                     .name_repair = .name_repair)
+}
 # anonymize names
 name_anonymizer <- function(data_input,mode="get"){
   data_input_bac <- data_input
