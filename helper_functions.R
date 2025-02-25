@@ -11,6 +11,15 @@ getuniquelen <- function(x) length(unique(x[!is.na(x)])) # length of vector of u
 len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
+# tokenizer 
+tokenize <- function(object,prefix,suffix,collapse=F){
+  out = gsub('(\\w+)', paste0(prefix,'\\1',suffix), object)
+  if(collapse==T){
+    out = paste(out,collapse = "|")
+    }
+  return(out)
+}
+
 # read in a currently-open xlsx file
 read_excel_tmp <- function(path, sheet = NULL, range = NULL, col_names = TRUE,
                            col_types = NULL, na = "", trim_ws = TRUE,
