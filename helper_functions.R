@@ -12,11 +12,15 @@ len <- function(x) length(x) # pythonic length
 lookup_first <- function(df) Reduce(`|`, lapply(df[2:ncol(df)], `==`, df[,1])) # lookup elements of first column in remaining columns of dataframe
 
 # tokenizer 
-tokenize <- function(object,prefix,suffix,collapse=F){
-  out = gsub('(\\w+)', paste0(prefix,'\\1',suffix), object)
+tokenize <- function(object,prefix,suffix,collapse=F,every="string"){
+  if(every=="string"){
+    out = gsub('(.*)', paste0(prefix,'\\1',suffix), object)
+  } else if(every=="word") {
+    out = gsub('(\\w+)', paste0(prefix,'\\1',suffix), object)
+  }
   if(collapse==T){
     out = paste(out,collapse = "|")
-    }
+  }
   return(out)
 }
 
